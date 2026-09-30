@@ -23,7 +23,7 @@ if ($idEvento === null || !isset($_SESSION['eventos'][$idEvento])) {
 
             $mensagem = "Preencha todos os campos.";
 
-        } elseif ($evento['status'] != 'aberto') {
+        } elseif ($evento['status'] != 'ativo') {
 
             $mensagem = "Este evento não está aberto para inscrições.";
 
