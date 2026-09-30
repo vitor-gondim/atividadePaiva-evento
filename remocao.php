@@ -37,7 +37,7 @@ $evento = $_SESSION['eventos'][$id];
     <title>Documento</title>
 </head>
 
-<body>
+<body style="background-color: black; color:aliceblue">
 
     <h1>Remover Evento</h1>
 

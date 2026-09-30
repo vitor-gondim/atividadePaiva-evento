@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Editar Evento</title>
 </head>
 
-<body>
+<body style="background-color: black; color:aliceblue">
 
     <h1>Editar Evento</h1>
 

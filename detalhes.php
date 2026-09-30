@@ -27,7 +27,7 @@ $evento = $_SESSION['eventos'][$id];
 <title>Detalhes do Evento</title>
 </head>
 
-<body>
+<body style="background-color: black; color:aliceblue">
 
 <h1>Detalhes do Evento</h1>
 

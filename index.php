@@ -15,14 +15,26 @@ $eventos = $_SESSION['eventos'];
 <title>Eventos SENAI</title>
 </head>
 
-<body>
+<body style="background-color: black; color:aliceblue">
 
-<h1>Eventos do SENAI</h1>
-
+<h1 style="
+        background-color:cadetblue;
+        border: 3px solid;
+        width: fit-content;
+        border-radius: 15px;
+        padding: 5px;">Eventos do SENAI
+</h1>
+    <hr> 
+    <div style="border: 3px solid;
+         width: fit-content;
+         border-radius: 10px;
+         padding: 5px;
+         background-color:darkgray;"> 
+    
 <p>
 <a href="cadastro.php">Cadastrar novo evento</a>
 </p>
-
+</div>
 <?php if (empty($eventos)): ?>
 
 <p>Nenhum evento cadastrado.</p>
@@ -33,7 +45,15 @@ $eventos = $_SESSION['eventos'];
 
 
 
-<h2>
+<h2  style="
+        background-color:cadetblue;
+        border: 3px solid;
+        width: fit-content;
+        border-radius: 15px;
+        padding: 5px;">
+    
+
+
 <?= htmlspecialchars($evento['titulo']) ?>
 </h2>
 
@@ -48,11 +68,17 @@ $eventos = $_SESSION['eventos'];
 às
 <?= htmlspecialchars($evento['fim']) ?>
 </p>
-
 <p>
+<div style="                            
+         border: 3px solid;
+         width: fit-content;
+         border-radius: 10px;
+         padding: 5px;
+         background-color:darkgray;">
+
 <a href="detalhes.php?id=<?= $evento['id'] ?>">
 Ver detalhes
-</a>
+</a> 
 
 |
 
@@ -66,7 +92,7 @@ Editar
 Remover
 </a>
 </p>
-
+</div>
 <?php endforeach; ?>
 
 <?php endif; ?>

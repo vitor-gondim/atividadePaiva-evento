@@ -95,7 +95,7 @@ exit;
 <title>Cadastrar Evento</title>
 </head>
 
-<body>
+<body style="background-color: black; color:aliceblue">
 
 <h1>Cadastrar Evento</h1>
 
