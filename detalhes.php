@@ -77,6 +77,10 @@ $evento = $_SESSION['eventos'][$id];
 </p>
 
 <p>
+    <strong>Status:</strong>
+    <?= $evento['status'] ?? 'ativo' ?>
+</p>
+<p>
 <a href="index.php">Voltar</a>
 </p>
 
@@ -91,7 +95,19 @@ Editar evento
 Remover evento
 </a>
 </p>
+<p>
+    <form method="POST" action="status.php">
+        <input type="hidden" name="id" value="<?= $evento['id'] ?>">
+        <button type="submit" name="cancelar">Cancelar evento</button>
+    </form>
+</p>
 
+<p>
+    <form method="POST" action="status.php">
+        <input type="hidden" name="id" value="<?= $evento['id'] ?>">
+        <button type="submit" name="reativar">Reativar evento</button>
+    </form>
+</p>
 </body>
 
 </html>
