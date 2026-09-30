@@ -14,6 +14,11 @@ if ($idEvento === null || !isset($_SESSION['eventos'][$idEvento])) {
 
     $evento = &$_SESSION['eventos'][$idEvento];
 
+    // Se o evento não tiver vagas definidas (ex: criado no init.php sem essa chave), define como 0
+    if (!isset($evento['vagas'])) {
+        $evento['vagas'] = 0;
+    }
+
     $totalInscritos = 0;
 
     if (isset($_SESSION['inscricoes'])) {
@@ -30,11 +35,11 @@ if ($idEvento === null || !isset($_SESSION['eventos'][$idEvento])) {
 
         $novasVagas = $_POST['vagas'] ?? '';
 
-        if (!filter_var($novasVagas, FILTER_VALIDATE_INT) || $novasVagas <= 0) {
+        if (!filter_var($novasVagas, FILTER_VALIDATE_INT) || (int)$novasVagas <= 0) {
 
             $mensagem = "Erro: A capacidade deve ser um número maior que zero.";
 
-        } elseif ($novasVagas < $totalInscritos) {
+        } elseif ((int)$novasVagas < $totalInscritos) {
 
             $mensagem = "Erro: Já existem $totalInscritos inscritos. A capacidade não pode ser menor que o número de inscritos.";
 
@@ -69,7 +74,7 @@ if ($idEvento === null || !isset($_SESSION['eventos'][$idEvento])) {
 
         <?php if (isset($evento)): ?>
 
-            <h2><?= $evento['titulo'] ?></h2>
+            <h2><?= htmlspecialchars($evento['titulo']) ?></h2>
 
             <p>
                 Capacidade total atual:
