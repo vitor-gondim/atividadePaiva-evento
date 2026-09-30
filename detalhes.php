@@ -96,6 +96,12 @@ Remover evento
 </a>
 </p>
 <p>
+    <a href="inscricoes.php?id=<?= $evento['id'] ?>">
+        Inscrição
+    </a>
+</p>
+
+<p>
     <form method="POST" action="status.php">
         <input type="hidden" name="id" value="<?= $evento['id'] ?>">
         <button type="submit" name="cancelar">Cancelar evento</button>
