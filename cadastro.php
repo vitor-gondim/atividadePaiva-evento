@@ -1,4 +1,3 @@
-
 <?php
 
 require_once 'init.php';
@@ -13,75 +12,82 @@ $inicio = '';
 $fim = '';
 $local = '';
 $responsavel = '';
+$vagas = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-$titulo = trim($_POST['titulo'] ?? '');
-$descricao = trim($_POST['descricao'] ?? '');
-$area = trim($_POST['area'] ?? '');
-$data = trim($_POST['data'] ?? '');
-$inicio = trim($_POST['inicio'] ?? '');
-$fim = trim($_POST['fim'] ?? '');
-$local = trim($_POST['local'] ?? '');
-$responsavel = trim($_POST['responsavel'] ?? '');
+    $titulo = trim($_POST['titulo'] ?? '');
+    $descricao = trim($_POST['descricao'] ?? '');
+    $area = trim($_POST['area'] ?? '');
+    $data = trim($_POST['data'] ?? '');
+    $inicio = trim($_POST['inicio'] ?? '');
+    $fim = trim($_POST['fim'] ?? '');
+    $local = trim($_POST['local'] ?? '');
+    $responsavel = trim($_POST['responsavel'] ?? '');
+    $vagas = trim($_POST['vagas'] ?? '');
 
-if ($titulo === '') {
-$erros[] = 'O título é obrigatório.';
-}
+    if ($titulo === '') {
+        $erros[] = 'O título é obrigatório.';
+    }
 
-if ($descricao === '') {
-$erros[] = 'A descrição é obrigatória.';
-}
+    if ($descricao === '') {
+        $erros[] = 'A descrição é obrigatória.';
+    }
 
-if ($area === '') {
-$erros[] = 'A área é obrigatória.';
-}
+    if ($area === '') {
+        $erros[] = 'A área é obrigatória.';
+    }
 
-if ($data === '') {
-$erros[] = 'A data é obrigatória.';
-}
+    if ($data === '') {
+        $erros[] = 'A data é obrigatória.';
+    }
 
-if ($inicio === '') {
-$erros[] = 'O horário de início é obrigatório.';
-}
+    if ($inicio === '') {
+        $erros[] = 'O horário de início é obrigatório.';
+    }
 
-if ($fim === '') {
-$erros[] = 'O horário de fim é obrigatório.';
-}
+    if ($fim === '') {
+        $erros[] = 'O horário de fim é obrigatório.';
+    }
 
-if ($local === '') {
-$erros[] = 'O local é obrigatório.';
-}
+    if ($local === '') {
+        $erros[] = 'O local é obrigatório.';
+    }
 
-if ($responsavel === '') {
-$erros[] = 'O responsável é obrigatório.';
-}
+    if ($responsavel === '') {
+        $erros[] = 'O responsável é obrigatório.';
+    }
 
-if ($inicio !== '' && $fim !== '' && $fim <= $inicio) {
-$erros[] = 'O horário final deve ser maior que o horário inicial.';
-}
+    if ($vagas === '' || !filter_var($vagas, FILTER_VALIDATE_INT) || (int)$vagas <= 0) {
+        $erros[] = 'A quantidade de vagas é obrigatória e deve ser um número maior que zero.';
+    }
 
-if (empty($erros)) {
+    if ($inicio !== '' && $fim !== '' && $fim <= $inicio) {
+        $erros[] = 'O horário final deve ser maior que o horário inicial.';
+    }
 
-$id = $_SESSION['proximo_id'];
+    if (empty($erros)) {
 
-$_SESSION['eventos'][$id] = [
-'id' => $id,
-'titulo' => $titulo,
-'descricao' => $descricao,
-'area' => $area,
-'data' => $data,
-'inicio' => $inicio,
-'fim' => $fim,
-'local' => $local,
-'responsavel' => $responsavel
-];
+        $id = $_SESSION['proximo_id'];
 
-$_SESSION['proximo_id']++;
+        $_SESSION['eventos'][$id] = [
+            'id' => $id,
+            'titulo' => $titulo,
+            'descricao' => $descricao,
+            'area' => $area,
+            'data' => $data,
+            'inicio' => $inicio,
+            'fim' => $fim,
+            'local' => $local,
+            'responsavel' => $responsavel,
+            'vagas' => (int)$vagas
+        ];
 
-header('Location: index.php');
-exit;
-}
+        $_SESSION['proximo_id']++;
+
+        header('Location: index.php');
+        exit;
+    }
 }
 
 ?>
@@ -90,136 +96,77 @@ exit;
 <html lang="pt-BR">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cadastrar Evento</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Evento</title>
 </head>
 
 <body>
 
-<h1>Cadastrar Evento</h1>
+    <h1>Cadastrar Evento</h1>
 
-<?php if (!empty($erros)): ?>
+    <?php if (!empty($erros)): ?>
+        <ul>
+            <?php foreach ($erros as $erro): ?>
+                <li><?= htmlspecialchars($erro) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
 
-<ul>
+    <form method="POST">
 
-<?php foreach ($erros as $erro): ?>
+        <p>
+            <label for="titulo">Título:</label><br>
+            <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($titulo) ?>" required>
+        </p>
 
-<li>
-<?= htmlspecialchars($erro) ?>
-</li>
+        <p>
+            <label for="descricao">Descrição:</label><br>
+            <textarea id="descricao" name="descricao" required><?= htmlspecialchars($descricao) ?></textarea>
+        </p>
 
-<?php endforeach; ?>
+        <p>
+            <label for="area">Área:</label><br>
+            <input type="text" id="area" name="area" value="<?= htmlspecialchars($area) ?>" required>
+        </p>
 
-</ul>
+        <p>
+            <label for="vagas">Quantidade de Vagas (Limite Inicial):</label><br>
+            <input type="number" id="vagas" name="vagas" value="<?= htmlspecialchars($vagas) ?>" min="1" required>
+        </p>
 
-<?php endif; ?>
+        <p>
+            <label for="data">Data:</label><br>
+            <input type="date" id="data" name="data" value="<?= htmlspecialchars($data) ?>" required>
+        </p>
 
-<form method="POST">
+        <p>
+            <label for="inicio">Horário de início:</label><br>
+            <input type="time" id="inicio" name="inicio" value="<?= htmlspecialchars($inicio) ?>" required>
+        </p>
 
-<p>
-<label for="titulo">Título:</label>
-<br>
-<input
-type="text"
-id="titulo"
-name="titulo"
-value="<?= htmlspecialchars($titulo) ?>"
-required
->
-</p>
+        <p>
+            <label for="fim">Horário de fim:</label><br>
+            <input type="time" id="fim" name="fim" value="<?= htmlspecialchars($fim) ?>" required>
+        </p>
 
-<p>
-<label for="descricao">Descrição:</label>
-<br>
-<textarea
-id="descricao"
-name="descricao"
-required
-><?= htmlspecialchars($descricao) ?></textarea>
-</p>
+        <p>
+            <label for="local">Local:</label><br>
+            <input type="text" id="local" name="local" value="<?= htmlspecialchars($local) ?>" required>
+        </p>
 
-<p>
-<label for="area">Área:</label>
-<br>
-<input
-type="text"
-id="area"
-name="area"
-value="<?= htmlspecialchars($area) ?>"
-required
->
-</p>
+        <p>
+            <label for="responsavel">Responsável:</label><br>
+            <input type="text" id="responsavel" name="responsavel" value="<?= htmlspecialchars($responsavel) ?>" required>
+        </p>
 
-<p>
-<label for="data">Data:</label>
-<br>
-<input
-type="date"
-id="data"
-name="data"
-value="<?= htmlspecialchars($data) ?>"
-required
->
-</p>
+        <button type="submit">Cadastrar evento</button>
 
-<p>
-<label for="inicio">Horário de início:</label>
-<br>
-<input
-type="time"
-id="inicio"
-name="inicio"
-value="<?= htmlspecialchars($inicio) ?>"
-required
->
-</p>
+    </form>
 
-<p>
-<label for="fim">Horário de fim:</label>
-<br>
-<input
-type="time"
-id="fim"
-name="fim"
-value="<?= htmlspecialchars($fim) ?>"
-required
->
-</p>
-
-<p>
-<label for="local">Local:</label>
-<br>
-<input
-type="text"
-id="local"
-name="local"
-value="<?= htmlspecialchars($local) ?>"
-required
->
-</p>
-
-<p>
-<label for="responsavel">Responsável:</label>
-<br>
-<input
-type="text"
-id="responsavel"
-name="responsavel"
-value="<?= htmlspecialchars($responsavel) ?>"
-required
->
-</p>
-
-<button type="submit">
-Cadastrar evento
-</button>
-
-</form>
-
-<p>
-<a href="index.php">Cancelar</a>
-</p>
+    <p>
+        <a href="index.php">Cancelar</a>
+    </p>
 
 </body>
 
