@@ -4,11 +4,9 @@ require_once 'init.php';
 
 $id = (int) $_POST['id'];
 
-$evento = &$_SESSION['eventos'][$id];
-
 if (isset($_POST['cancelar'])) {
 
-    $evento['status'] = 'cancelado';
+    $_SESSION['eventos'][$id]['status'] = 'cancelado';
 
 }
 
@@ -16,16 +14,19 @@ if (isset($_POST['reativar'])) {
 
     $totalInscritos = 0;
 
-    foreach ($_SESSION['inscricoes'] as $inscricao) {
+    if (isset($_SESSION['inscricoes'])) {
 
-        if ($inscricao['evento_id'] == $id) {
-            $totalInscritos++;
+        foreach ($_SESSION['inscricoes'] as $inscricao) {
+
+            if ($inscricao['evento_id'] == $id) {
+                $totalInscritos++;
+            }
         }
     }
 
-    if ($totalInscritos < $evento['vagas']) {
+    if ($totalInscritos < $_SESSION['eventos'][$id]['vagas']) {
 
-        $evento['status'] = 'ativo';
+        $_SESSION['eventos'][$id]['status'] = 'ativo';
 
     }
 }
