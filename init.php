@@ -22,7 +22,8 @@ $_SESSION['eventos'] = [
 'inicio' => '10:30',
 'fim' => '11:30',
 'local' => 'Laboratório 2',
-'responsavel' => 'Profa. Ana'
+'responsavel' => 'Profa. Ana',
+'status' => 'ativo'
 ]
 ];
 $_SESSION['proximo_id'] = 3;
